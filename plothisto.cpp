@@ -1,5 +1,4 @@
 #include "plothisto.h"
-//#include "shellsort.h"
 #include "msort.cpp"
 #include "random.cpp"
 #include <QtWidgets/QMainWindow>
@@ -64,9 +63,11 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 
         //Timer que atualiza o indice h
         updateTimer = new QTimer(this);
-        updateTimer->setInterval(100);
+        updateTimer->setInterval(150);
         updateTimer->start();
 
+
+//        mergeSort(vet, 0, n -1);
         //Conecçoes
         connect(updateTimer, SIGNAL (timeout()), this, SLOT (teste()));
         connect(botaum, SIGNAL (clicked(bool)), this, SLOT (BotaumEvent()));
@@ -74,7 +75,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 
 //Slot que gera um novo vetor e reinicia o algoritmo
 void PlotHisto::BotaumEvent(){
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < n; i++){
         set0->replace(i, aleatorio());
     }
     do{
