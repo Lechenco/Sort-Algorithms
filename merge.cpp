@@ -1,7 +1,14 @@
-#include <cstdlib>
+#include "merge.h"
 #include <cstdio>
+#include <cstdlib>
+#include <QTime>
 
-void merge(int *A, int p, int q, int r){
+Merge::Merge(QObject *parent) : QObject(parent)
+{
+
+}
+
+void Merge::merge(int p, int q, int r){
         int i, j, k;
         int n1 = q - p +1;
         int n2 = r - q;
@@ -31,20 +38,34 @@ void merge(int *A, int p, int q, int r){
                         A[k] = R[j];
                         j++;
                 }
+                QTime *tmp = new QTime();
+                tmp->start();
+                while(tmp->elapsed() < 200){
+
+                }
+
+                emit resultReady();
+
         }
+
 }
 
-void mergeSort(int *A, int p, int r){
+void Merge::mergeSort(int p, int r){
         int q;
+       // Merge *aux = new Merge();
 
         if(p < r){
                 q = (p + r)/2;
-                mergeSort(A, p, q);
-                mergeSort(A, q+1, r);
-                merge(A, p, q, r);
-                //for(i = 0; i <= r; i++)
-                  //      printf("%d ", A[i]);
-                //printf("\n");
+                this->mergeSort( p, q);
+                this->mergeSort(q+1, r);
+                this->merge(p, q, r);
+
         }
+
+}
+
+void Merge::doWork(){
+
+    this->mergeSort(0, 14);
 
 }

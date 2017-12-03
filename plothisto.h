@@ -1,40 +1,47 @@
 #ifndef PLOTHISTO_H
 #define PLOTHISTO_H
+#define TAM 30
 
 #include <QWidget>
 #include <QtCharts>
+#include <QThread>
 
 class QPushButton;
 class QLabel;
-//class ShellSort;
+class Merge;
+class ShellSort;
 class PlotHisto : public QWidget
 {
     Q_OBJECT
+    QThread workerthread;
 public:
     explicit PlotHisto(QWidget *parent = nullptr);
-
-private slots:
-    void teste();
-    void BotaumEvent();
-    void shellsort();
-signals:
+    void mergeSort(int p, int r);
+    void merge(int p, int q, int r);
+    void updateArrays();
 
 public slots:
+    //void handleResults();
+    void randomArray();
+    void invertArray();
+    void updateChart();
+
+signals:
+    void operate();
+
 private:
+     Merge *m;
+     ShellSort *s;
 
 
-    int vet[50];
-    int chave, i, j, n = 50, count = 0;
-    int h = 1;
-    QTimer *updateTimer;
+    int n = TAM, count = 0;
+
     QBarSet *set0;
-    QBarSeries *series;
-    QChart *chart;
-    QChartView *chartView;
-    QPushButton *botaum;
+    QList<QChartView *> m_chartView;
+    QPushButton *random, *invert;
     QLabel *txt;
 
-    //ShellSort *ssort;
+
 };
 
 #endif // PLOTHISTO_H

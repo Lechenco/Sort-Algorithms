@@ -1,7 +1,7 @@
-#include <time.h>
+ #include <time.h>
 #include <stdlib.h>
 
-int aleatorio(){
-    return rand() % 50;
+int aleatorio(int n){
+    return rand() % n +1;
 
 }

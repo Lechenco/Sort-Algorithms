@@ -1,6 +1,8 @@
+#include "merge.h"
+#include "shellsort.h"
 #include "plothisto.h"
-#include "msort.cpp"
 #include "random.cpp"
+
 #include <QtWidgets/QMainWindow>
 #include <QtCharts/QChartView>
 #include <QtCharts/QBarSeries>
@@ -17,24 +19,22 @@ QT_CHARTS_USE_NAMESPACE
 
 PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 {
+        m = new Merge();
+        s = new ShellSort();
         set0 = new QBarSet("Quick");
 
         //Iniciando variaveis e vetor inicial (invertido)
-        for(int i = n; i > 0; i--){
+        for(int i = n, j = 0; i > 0; i--, j++){
+            s->A[j] = i;
             set0->append(i);
         }
 
-        do{
-            h = 3*h + 1;
-        }while(h < 50);
-        i = n;
-
         //Configurando o plot
-        series = new QBarSeries(this);
+        QBarSeries *series = new QBarSeries(this);
         series->append(set0);
 
 
-        chart = new QChart();
+        QChart *chart = new QChart();
         chart->addSeries(series);
         chart->setTitle("Shellsort");
         chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -42,79 +42,87 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         chart->legend()->setVisible(false);
         /*chart->legend()->setAlignment(Qt::AlignBottom);*/
 
-        chartView = new QChartView(chart);
-        chartView->setRenderHint(QPainter::Antialiasing);
-        chartView->setMinimumSize(640, 480);
 
-        botaum = new QPushButton(this);
-        botaum->setText("Random");
+        random = new QPushButton(this);
+        random->setText("Random");
+        random->setFixedSize(60, 30);
 
-        //Conta o numero de iteraçoes necessarias para ordenar a entrada
-        txt = new QLabel();
-        txt->setNum(count);
+        invert = new QPushButton(this);
+        invert->setText("Invertido");
+        invert->setFixedSize(60, 30);
 
-        QGridLayout *mainLayout = new QGridLayout;
-        mainLayout->addWidget(botaum, 1, 0);
-        mainLayout->addWidget(txt, 0, 0);
-        mainLayout->addWidget(chartView, 1, 1);
-        setLayout(mainLayout);
+
+        //===========================================
+        //TESTE
+        //============================================
+
+        QGridLayout *baseLayout = new QGridLayout();
+        QHBoxLayout *settingsLayout = new QHBoxLayout();
+        settingsLayout->addWidget(random);
+        settingsLayout->addWidget(invert);
+        baseLayout->addLayout(settingsLayout, 0, 0);
+
+        QChartView *chartView = new QChartView(chart);
+        baseLayout->addWidget(chartView, 1, 0);
+        m_chartView << chartView;
+
+        setLayout(baseLayout);
+
 
         //chartView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-        //Timer que atualiza o indice h
-        updateTimer = new QTimer(this);
-        updateTimer->setInterval(150);
-        updateTimer->start();
 
+//Merge Sort ThreadConection
+/*
+        m->moveToThread(&workerthread);
+        connect(&workerthread, &QThread::finished, m, &QObject::deleteLater);
+        connect(this, &PlotHisto::operate, m, &Merge::doWork);
+        connect(m, &Merge::resultReady, this, &PlotHisto::BotaumEvent);
+*/
+        s->setN(n);
+        s->moveToThread(&workerthread);
+        connect(&workerthread, &QThread::finished, s, &QObject::deleteLater);
+        connect(this, &PlotHisto::operate, s, &ShellSort::doWork);
+        connect(s, &ShellSort::resultReady, this, &PlotHisto::updateChart);
 
-//        mergeSort(vet, 0, n -1);
+        workerthread.start();
+
+        emit operate();
+
         //Conecçoes
-        connect(updateTimer, SIGNAL (timeout()), this, SLOT (teste()));
-        connect(botaum, SIGNAL (clicked(bool)), this, SLOT (BotaumEvent()));
+        connect(random, SIGNAL (clicked(bool)), this, SLOT (randomArray()));
+        connect(invert, SIGNAL (clicked(bool)), this, SLOT (invertArray()));
 }
 
 //Slot que gera um novo vetor e reinicia o algoritmo
-void PlotHisto::BotaumEvent(){
+void PlotHisto::randomArray(){
+
     for(int i = 0; i < n; i++){
-        set0->replace(i, aleatorio());
+        set0->replace(i, aleatorio(n));
     }
-    do{
-        h = 3*h + 1;
-    }while(h < 50);
-    i = n;
-
-    count = 0;
-    updateTimer->start();
-
+    this->updateArrays();
+    emit operate();
 
 }
 
-//Slot que gerencia os indices da funçao shellsort
-void PlotHisto::teste(){
-     if(i >= n){
-        h /= 3;
-        i = h;
-     }
+void PlotHisto::invertArray(){
+    for(int i = n, j = 0; j < n; i--, j++ )
+        set0->replace(j, i);
+    this->updateArrays();
 
-     this->shellsort();
-     count++;
-     txt->setNum(count);
-
-     if(h ==1 && i >= n)
-         updateTimer->stop();
+    emit operate();
 
 }
 
-void PlotHisto::shellsort(){
-     chave = set0->at(i);
-     j = i;
-     while(j >= h && set0->at(j - h) > chave){
-         set0->replace(j, set0->at(j - h));
-         j -= h;
-     }
+void PlotHisto::updateChart(){
+    for(int i = 0; i < n; i++)
+        set0->replace(i, s->A[i]);
+}
 
-     set0->replace(j, chave);
-     updateTimer->start();
+void PlotHisto::updateArrays(){
+    for(int i = 0; i < n; i++){
+        m->A[i] = set0->at(i);
+        s->A[i] = set0->at(i);
+    }
 
-     i++;
 }

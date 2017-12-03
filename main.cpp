@@ -41,9 +41,12 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    PlotHisto chartView;
+    QMainWindow window;
+    PlotHisto *chartView = new PlotHisto();
 
-    chartView.show();
+    window.setCentralWidget(chartView);
+    window.resize(300, 400);
+    window.show();
 
 
     return a.exec();
