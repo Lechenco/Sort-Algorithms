@@ -12,6 +12,7 @@ public:
     void setN(int n);
 
     int A[30];
+    int comp = 0, swap = 0;
 
 signals:
     void resultReady();

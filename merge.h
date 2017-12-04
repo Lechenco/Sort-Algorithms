@@ -15,6 +15,7 @@ public:
 
     //Achar outra forma de passar vetores entre classes <vector>
     int A[30];
+    int comp = 0, swap = 0;
 
 signals:
     void resultReady();

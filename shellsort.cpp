@@ -24,26 +24,29 @@ void ShellSort::shellsort(int *vet){
         for(i = h; i < n; i++){
             chave = vet[i];
             j = i;
-            while(j >= h && vet[j - h] > chave){
+            while(++comp && j >= h && vet[j - h] > chave){
                 vet[j] = vet[j - h];
                 j -= h;
+                ++swap;
 
-                 QTime *tmp = new QTime();
-                 tmp->start();
-                 while(tmp->elapsed() < 200){
+                QTime *tmp = new QTime();
+                tmp->start();
+                while(tmp->elapsed() < 100){
 
-                 }
+                }
 
-                 emit resultReady();
+                emit resultReady();
             }
             vet[j] = chave;
+            ++swap;
         }
 
     }while(h != 1);
+    emit finish();
 }
 
 void ShellSort::doWork(){
-
+    comp = 0; swap = 0;
     this->shellsort(A);
 
 }

@@ -15,13 +15,14 @@ void InsertionSort::insertion_sort(int n){
        chave = A[j];
        i = j-1;
 
-        while(i>=0 && A[i]>chave){
+        while(++comp && i>=0 && A[i]>chave){
             A[i+1] = A[i];
             i = i-1;
+            ++swap;
 
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 200){
+            while(tmp->elapsed() < 100){
 
             }
 
@@ -37,5 +38,6 @@ void InsertionSort::setN(int n){
 }
 
 void InsertionSort::doWork(){
+    comp = 0; swap = 0;
     this->insertion_sort(n);
 }

@@ -12,6 +12,7 @@ class QLabel;
 class BubbleSort;
 class InsertionSort;
 class Merge;
+class RadixSort;
 class SelectionSort;
 class ShellSort;
 class QuickSort;
@@ -23,6 +24,7 @@ class PlotHisto : public QWidget
     QThread worker2;
     QThread workerB;
     QThread workerI;
+    QThread workerR;
     QThread workerSS;
     QThread workerQ;
 public:
@@ -34,8 +36,7 @@ public slots:
     void randomArray();
     void invertArray();
     void updateChart();
-    void updateColor();
-
+    void setN(int n);
 
 signals:
     void operate();
@@ -44,15 +45,18 @@ private:
      BubbleSort *b;
      InsertionSort *is;
      Merge *m;
+     RadixSort *r;
      ShellSort *s;
      SelectionSort *ss;
      QuickSort *q;
 
     int n = TAM, count = 0;
 
-    QBarSet *set0, *set1, *set2, *set3, *set4, *set5;
+    QBarSet *set0, *set1, *set2, *set3, *set4, *set5, *set6;
     QList<QChartView *> m_chartView;
+    QList<QLabel *> m_label, m_compara;
     QPushButton *random, *invert;
+    QSlider *slider;
 
     QChart* addChart(int i);
 

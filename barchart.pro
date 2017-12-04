@@ -9,7 +9,8 @@ SOURCES += \
     selectionsort.cpp \
     bubblesort.cpp \
     insertionsort.cpp \
-    quicksort.cpp
+    quicksort.cpp \
+    radixsort.cpp
 
 
 INSTALLS += target
@@ -21,4 +22,5 @@ HEADERS += \
     selectionsort.h \
     bubblesort.h \
     insertionsort.h \
-    quicksort.h
+    quicksort.h \
+    radixsort.h

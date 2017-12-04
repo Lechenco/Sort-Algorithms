@@ -1,12 +1,14 @@
 #include "bubblesort.h"
 #include "insertionsort.h"
 #include "merge.h"
+#include "radixsort.h"
 #include "shellsort.h"
 #include "selectionsort.h"
 #include "quicksort.h"
 #include "plothisto.h"
 #include "random.cpp"
 
+#include <string>
 #include <QtWidgets/QMainWindow>
 #include <QtCharts/QChartView>
 #include <QtCharts/QBarSeries>
@@ -26,6 +28,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         b = new BubbleSort();
         is = new InsertionSort();
         m = new Merge();
+        r = new RadixSort();
         s = new ShellSort();
         ss = new SelectionSort();
         q = new QuickSort();
@@ -35,6 +38,9 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         set3 = new QBarSet("Quick");
         set4 = new QBarSet("Insert");
         set5 = new QBarSet("Selection");
+        set6 = new QBarSet("Radix");
+
+        resetRand();
 
         //Iniciando variaveis e vetor inicial (invertido)
         for(int i = n, j = 0; i > 0; i--, j++){
@@ -44,6 +50,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
             ss->A[j] = i;
             m->A[j] = i;
             q->A[j] = i;
+            r->A[j] = i;
 
             set0->append(i);
             set1->append(i);
@@ -51,6 +58,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
             set3->append(i);
             set4->append(i);
             set5->append(i);
+            set6->append(i);
         }
 
         random = new QPushButton(this);
@@ -61,6 +69,9 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         invert->setText("Invertido");
         invert->setFixedSize(60, 30);
 
+        slider = new QSlider();
+        slider->setOrientation(Qt::Horizontal);
+        slider->setRange(0, 30);
 
         //===========================================
         //Graficos
@@ -68,9 +79,12 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 
         QGridLayout *baseLayout = new QGridLayout();
         QHBoxLayout *settingsLayout = new QHBoxLayout();
+        settingsLayout->setDirection(QHBoxLayout::TopToBottom);
         settingsLayout->addWidget(random);
         settingsLayout->addWidget(invert);
+        settingsLayout->addWidget(slider);
         baseLayout->addLayout(settingsLayout, 0, 0);
+
 
         QChartView *chartView = new QChartView(this->addChart(0));
         baseLayout->addWidget(chartView, 0, 2);
@@ -96,6 +110,25 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         baseLayout->addWidget(chartView, 2, 1);
         m_chartView << chartView;
 
+        chartView = new QChartView(this->addChart(6));
+        baseLayout->addWidget(chartView, 2, 2);
+        m_chartView << chartView;
+
+        QHBoxLayout *textLayout = new QHBoxLayout();
+        QBoxLayout * numLayout = new QHBoxLayout();
+        textLayout->setDirection(QBoxLayout::TopToBottom);
+        numLayout->setDirection(QBoxLayout::TopToBottom);
+
+        QLabel *aux = new QLabel("");
+        textLayout->addWidget(aux);
+        aux = new QLabel("Comp. \tSwap");
+        numLayout->addWidget(aux);
+        for(int i = 0; i < m_label.size(); i++){
+            textLayout->addWidget(m_label.at(i));
+            numLayout->addWidget(m_compara.at(i));
+        }
+        baseLayout->addLayout(textLayout, 0, 1);
+        baseLayout->addLayout(numLayout, 0, 1,Qt::AlignRight);
         setLayout(baseLayout);
 
 
@@ -107,7 +140,6 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         m->setN(n);
         m->moveToThread(&workerthread);
         connect(&workerthread, &QThread::finished, m, &QObject::deleteLater);
-       // connect(&workerthread, &QThread::finished, this, &PlotHisto::updateColor);
         connect(this, &PlotHisto::operate, m, &Merge::doWork);
         connect(m, &Merge::resultReady, this, &PlotHisto::updateChart);
 
@@ -146,18 +178,43 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         connect(this, &PlotHisto::operate, ss, &SelectionSort::doWork);
         connect(ss, &SelectionSort::resultReady, this, &PlotHisto::updateChart);
 
+//RadixSort ThreadConnection
+         r->setN(n);
+         r->moveToThread(&workerR);
+         connect(&workerR, &QThread::finished, r, &QObject::deleteLater);
+         connect(this, &PlotHisto::operate, r, &RadixSort::doWork);
+         connect(r, &RadixSort::resultReady, this, &PlotHisto::updateChart);
+
         workerthread.start();
         worker2.start();
         workerB.start();
         workerQ.start();
         workerI.start();
         workerSS.start();
+        workerR.start();
 
-       emit operate();
+       //emit operate();
 
         //Conecçoes
         connect(random, SIGNAL (clicked(bool)), this, SLOT (randomArray()));
         connect(invert, SIGNAL (clicked(bool)), this, SLOT (invertArray()));
+        connect(slider, SIGNAL (valueChanged(int)), this, SLOT (setN(int)));
+}
+
+void PlotHisto::setN(int n){
+    this->n = n;
+    b->setN(n);
+    is->setN(n);
+    m->setN(n);
+    s->setN(n);
+    r->setN(n);
+    q->setN(n);
+    ss->setN(n);
+
+    for(int i = 0; i < m_chartView.size(); i++){
+
+    }
+
 }
 
 //Slot que gera um novo vetor e reinicia o algoritmo
@@ -172,6 +229,7 @@ void PlotHisto::randomArray(){
         set3->replace(i, aux);
         set4->replace(i, aux);
         set5->replace(i, aux);
+        set6->replace(i, aux);
     }
     this->updateArrays();
     emit operate();
@@ -186,6 +244,7 @@ void PlotHisto::invertArray(){
         set3->replace(j, i);
         set4->replace(j, i);
         set5->replace(j, i);
+        set6->replace(j, i);
     }
     this->updateArrays();
 
@@ -200,8 +259,16 @@ void PlotHisto::updateChart(){
         set2->replace(i, b->A[i]);
         set3->replace(i, q->A[i]);
         set4->replace(i, is->A[i]);
-        set5->replace(i, is->A[i]);
+        set5->replace(i, ss->A[i]);
+        set6->replace(i, r->A[i]);
     }
+    m_compara.at(0)->setText(QString::number(s->comp) + " \t" + QString::number(s->swap));
+    m_compara.at(1)->setText(QString::number(m->swap) + " \t" + QString::number(m->swap));
+    m_compara.at(2)->setText(QString::number(b->comp) + " \t" + QString::number(b->swap));
+    m_compara.at(3)->setText(QString::number(q->comp) + " \t" + QString::number(q->swap));
+    m_compara.at(4)->setText(QString::number(is->comp) + " \t" + QString::number(is->swap));
+    m_compara.at(5)->setText(QString::number(ss->comp) + " \t" + QString::number(ss->swap));
+    m_compara.at(6)->setText(QString::number(r->comp) + " \t" + QString::number(r->swap));
 }
 
 void PlotHisto::updateArrays(){
@@ -212,6 +279,7 @@ void PlotHisto::updateArrays(){
         q->A[i] = set0->at(i);
         is->A[i] = set0->at(i);
         ss->A[i] = set0->at(i);
+        r->A[i] = set0->at(i);
     }
 
 }
@@ -220,36 +288,52 @@ QChart* PlotHisto::addChart(int i){
     //Configurando o plot
     QBarSeries *series = new QBarSeries(this);
     QChart *chart = new QChart();
+    QLabel *label = new QLabel();
+    QLabel *numLabel = new QLabel();
 
     switch (i) {
     case 0:
         series->append(set0);
         chart->setTitle("Shellsort");
+        label->setText("ShellSort");
         break;
     case 1:
         series->append(set1);
         chart->setTitle("MergeSort");
+        label->setText("MergeSort");
         break;
     case 2:
         series->append(set2);
         chart->setTitle("BubbleSort");
+        label->setText("BubbleSort");
         break;
     case 3:
         series->append(set3);
         chart->setTitle("QuickSort");
+        label->setText("QuickSort");
         break;
     case 4:
         series->append(set4);
         chart->setTitle("InsertionSort");
+        label->setText("InsertionSort");
         break;
     case 5:
         series->append(set5);
         chart->setTitle("SelectionSort");
+        label->setText("SelectionSort");
+        break;
+    case 6:
+        series->append(set6);
+        chart->setTitle("RadixSort");
+        label->setText("RadixSort");
         break;
     default:
         break;
     }
+    numLabel->setNum(0);
 
+    m_compara << numLabel;
+    m_label << label;
 
     chart->addSeries(series);
     chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -257,14 +341,4 @@ QChart* PlotHisto::addChart(int i){
     chart->legend()->setVisible(false);
     /*chart->legend()->setAlignment(Qt::AlignBottom);*/
     return chart;
-}
-
-void PlotHisto::updateColor(){
-    //QColor *color = new QColor(Qt::green);
-
-    //if(workerthread.isFinished())
-        set1->setColor(Qt::green);
-        m_chartView.at(1)->chart()->setTitle("Olar");
-
-
 }

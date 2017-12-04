@@ -14,15 +14,16 @@ void BubbleSort::bubble_sort(int n){
 
         for(j=0; j<n-i; j++){
 
-            if(A[j]>A[j+1]){
+            if(++comp && A[j]>A[j+1]){
                 aux = A[j];
                 A[j] = A[j+1];
                 A[j+1] = aux;
+                ++swap;
             }
 
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 200){
+            while(tmp->elapsed() <100){
 
             }
 
@@ -32,6 +33,7 @@ void BubbleSort::bubble_sort(int n){
 }
 
 void BubbleSort::doWork(){
+    comp = 0; swap = 0;
     this->bubble_sort(n);
 }
 

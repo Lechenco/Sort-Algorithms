@@ -12,11 +12,13 @@ public:
     void shellsort(int *vet);
 
     int A[30];
+    int comp = 0, swap = 0;
 private:
     int n;
 
 signals:
     void resultReady();
+    void finish();
 
 public slots:
     void doWork();

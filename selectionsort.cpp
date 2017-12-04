@@ -16,11 +16,11 @@ void SelectionSort::selectionSort(int n){
 
         for(j = i+1; j < n; j++){
 
-            if(A[j] < A[menor])
+            if(++comp && A[j] < A[menor])
                 menor = j;
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 200){
+            while(tmp->elapsed() < 100){
 
             }
 
@@ -30,6 +30,7 @@ void SelectionSort::selectionSort(int n){
         aux = A[i];
         A[i] = A[menor];
         A[menor] = aux;
+        ++swap;
     }
 
 }
@@ -39,5 +40,6 @@ void SelectionSort::setN(int n){
 }
 
 void SelectionSort::doWork(){
+    comp = 0; swap = 0;
     this->selectionSort(n);
 }

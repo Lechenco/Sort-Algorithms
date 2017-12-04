@@ -34,13 +34,18 @@ void Merge::merge(int p, int q, int r){
                 if(L[i] < R[j]){
                         A[k] = L[i];
                         i++;
+
                 }else{
                         A[k] = R[j];
                         j++;
+
                 }
+                comp++;
+                ++swap;
+
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 200){
+                while(tmp->elapsed() < 100){
 
                 }
 
@@ -65,7 +70,7 @@ void Merge::mergeSort(int p, int r){
 }
 
 void Merge::doWork(){
-
+    comp = 0; swap = 0;
     this->mergeSort(0, n);
 
 }
