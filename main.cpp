@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     PlotHisto *chartView = new PlotHisto();
 
     window.setCentralWidget(chartView);
-    window.resize(300, 400);
+    window.resize(700, 400);
     window.show();
 
 

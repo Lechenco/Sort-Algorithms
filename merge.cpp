@@ -66,6 +66,10 @@ void Merge::mergeSort(int p, int r){
 
 void Merge::doWork(){
 
-    this->mergeSort(0, 14);
+    this->mergeSort(0, n);
 
+}
+
+void Merge::setN(int n){
+    this->n = n;
 }
