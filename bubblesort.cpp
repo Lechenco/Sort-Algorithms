@@ -24,7 +24,7 @@ void BubbleSort::bubble_sort(){
 
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 400){
+            while(tmp->elapsed() <200){
 
             }
 
@@ -36,6 +36,7 @@ void BubbleSort::bubble_sort(){
 void BubbleSort::doWork(){
     comp = 0; swap = 0;
     this->bubble_sort();
+    emit greenPeace(2);
 }
 
 void BubbleSort::setN(int n){

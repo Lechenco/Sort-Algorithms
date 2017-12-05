@@ -21,7 +21,7 @@ void SelectionSort::selectionSort(int n){
                 menor = j;
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 400){
+            while(tmp->elapsed() < 200){
 
             }
 
@@ -45,4 +45,5 @@ void SelectionSort::setN(int n){
 void SelectionSort::doWork(){
     comp = 0; swap = 0;
     this->selectionSort(n);
+    emit greenPeace(5);
 }

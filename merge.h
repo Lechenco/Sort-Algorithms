@@ -19,6 +19,7 @@ public:
 
 signals:
     void resultReady();
+    void greenPeace(int x);
 
 public slots:
     void doWork();

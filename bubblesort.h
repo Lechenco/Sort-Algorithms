@@ -15,6 +15,7 @@ public:
     int comp = 0, swap = 0;
 signals:
     void resultReady();
+    void greenPeace(int x);
 
 public slots:
     void doWork();

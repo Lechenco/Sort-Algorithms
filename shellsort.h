@@ -18,7 +18,7 @@ private:
 
 signals:
     void resultReady();
-    void finish();
+    void greenPeace(int x);
 
 public slots:
     void doWork();

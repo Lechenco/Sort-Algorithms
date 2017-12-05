@@ -1,6 +1,6 @@
 #ifndef PLOTHISTO_H
 #define PLOTHISTO_H
-#define TAM 30
+#define TAM 35
 
 #include <QWidget>
 #include <QtCharts>
@@ -35,9 +35,12 @@ public slots:
     //void handleResults();
     void randomArray();
     void invertArray();
+    void almostArray();
     void updateChart();
     void setN(int n);
     void startThreads();
+    void finishApp();
+    void isRunning(int x);
 
 signals:
     void operate();
@@ -56,7 +59,8 @@ private:
     QBarSet *set0, *set1, *set2, *set3, *set4, *set5, *set6;
     QList<QChartView *> m_chartView;
     QList<QLabel *> m_label, m_compara;
-    QPushButton *random, *invert, *play;
+    QLabel *nStatus;
+    QPushButton *random, *invert, *play, *almost, *exitb;
     QSlider *slider;
     QGridLayout *baseLayout;
 

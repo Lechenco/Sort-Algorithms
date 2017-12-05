@@ -45,7 +45,7 @@ void Merge::merge(int p, int q, int r){
 
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 400){
+                while(tmp->elapsed() < 200){
 
                 }
 
@@ -72,7 +72,7 @@ void Merge::mergeSort(int p, int r){
 void Merge::doWork(){
     comp = 0; swap = 0;
     this->mergeSort(0, n);
-
+    emit greenPeace(1);
 }
 
 void Merge::setN(int n){

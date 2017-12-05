@@ -7,6 +7,7 @@ QuickSort::QuickSort(QObject *parent) : QObject(parent)
 
 }
 
+
 void QuickSort::quicksort(int left, int right){
 
     int i = left, j = right;
@@ -29,7 +30,7 @@ void QuickSort::quicksort(int left, int right){
                 }
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 1000){
+                while(tmp->elapsed() < 200){
 
                 }
 
@@ -52,5 +53,5 @@ void QuickSort::setN(int n){
 void QuickSort::doWork(){
     comp = 0; swap = 0;
     this->quicksort(0, n);
-   // partition(0, n);
+    emit greenPeace(3);
 }

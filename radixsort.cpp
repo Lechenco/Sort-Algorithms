@@ -56,7 +56,7 @@ void RadixSort::radixSort(int size){
 
       QTime *tmp = new QTime();
       tmp->start();
-      while(tmp->elapsed() < 400){
+      while(tmp->elapsed() < 200){
 
       }
 
@@ -73,6 +73,7 @@ void RadixSort::radixSort(int size){
 void RadixSort::doWork(){
     comp = 0; swap = 0;
     this->radixSort(n);
+    emit greenPeace(6);
 
 }
 void RadixSort::setN(int n){

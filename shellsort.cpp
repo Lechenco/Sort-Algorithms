@@ -33,7 +33,7 @@ void ShellSort::shellsort(int *vet){
 
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 400){
+                while(tmp->elapsed() < 200){
 
                 }
 
@@ -44,12 +44,12 @@ void ShellSort::shellsort(int *vet){
         }
 
     }while(h != 1);
-    emit finish();
 }
 
 void ShellSort::doWork(){
     comp = 0; swap = 0;
     this->shellsort(A);
+    emit greenPeace(0);
 
 }
 
