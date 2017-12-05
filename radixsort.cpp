@@ -1,5 +1,6 @@
 #include "radixsort.h"
 #include <QTime>
+#include <cstdlib>
 
 RadixSort::RadixSort(QObject *parent) : QObject(parent)
 {
@@ -55,7 +56,7 @@ void RadixSort::radixSort(int size){
 
       QTime *tmp = new QTime();
       tmp->start();
-      while(tmp->elapsed() <100){
+      while(tmp->elapsed() <1000){
 
       }
 
@@ -76,4 +77,6 @@ void RadixSort::doWork(){
 }
 void RadixSort::setN(int n){
     this->n = n;
+    free(A);
+    A = (int*) malloc(sizeof(int) * n);
 }

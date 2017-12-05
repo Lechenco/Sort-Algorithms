@@ -1,5 +1,6 @@
 #include "insertionsort.h"
 #include <QTime>
+#include <cstdlib>
 
 InsertionSort::InsertionSort(QObject *parent) : QObject(parent)
 {
@@ -22,7 +23,7 @@ void InsertionSort::insertion_sort(int n){
 
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 100){
+            while(tmp->elapsed() < 1000){
 
             }
 
@@ -35,9 +36,12 @@ void InsertionSort::insertion_sort(int n){
 
 void InsertionSort::setN(int n){
     this->n = n;
+    free(A);
+    A = (int*) malloc(sizeof(int) * n);
 }
 
 void InsertionSort::doWork(){
     comp = 0; swap = 0;
     this->insertion_sort(n);
+
 }

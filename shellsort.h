@@ -11,7 +11,7 @@ public:
     void setN(int n);
     void shellsort(int *vet);
 
-    int A[30];
+    int *A = NULL;
     int comp = 0, swap = 0;
 private:
     int n;

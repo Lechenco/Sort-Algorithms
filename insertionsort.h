@@ -11,7 +11,7 @@ public:
     void insertion_sort(int n);
     void setN(int n);
 
-    int A[30];
+    int *A = NULL;
     int comp = 0, swap = 0;
 
 signals:

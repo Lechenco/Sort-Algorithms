@@ -42,6 +42,12 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 
         resetRand();
         b->setN(n);
+        is->setN(n);
+        s->setN(n);
+        ss->setN(n);
+        m->setN(n);
+        q->setN(n);
+        r->setN(n);
         //Iniciando variaveis e vetor inicial (invertido)
         for(int i = n, j = 0; i > 0; i--, j++){
             b->A[j] = i;
@@ -76,7 +82,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 
         slider = new QSlider();
         slider->setOrientation(Qt::Horizontal);
-        slider->setRange(0, 25);
+        slider->setRange(5, 70);
 
         //===========================================
         //Graficos
@@ -116,14 +122,14 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 
 //Merge Sort ThreadConnection
 
-        m->setN(n);
+        //m->setN(n);
         m->moveToThread(&workerthread);
         connect(&workerthread, &QThread::finished, m, &QObject::deleteLater);
         connect(this, &PlotHisto::operate, m, &Merge::doWork);
         connect(m, &Merge::resultReady, this, &PlotHisto::updateChart);
 
 //ShellSort ThreadConnection
-        s->setN(n);
+      //  s->setN(n);
         s->moveToThread(&worker2);
         connect(&worker2, &QThread::finished, s, &QObject::deleteLater);
         connect(this, &PlotHisto::operate, s, &ShellSort::doWork);
@@ -137,28 +143,28 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         connect(b, &BubbleSort::resultReady, this, &PlotHisto::updateChart);
 
 //QuickSort ThreadConnection
-        q->setN(n);
+       // q->setN(n);
         q->moveToThread(&workerQ);
         connect(&workerQ, &QThread::finished, q, &QObject::deleteLater);
         connect(this, &PlotHisto::operate, q, &QuickSort::doWork);
         connect(q, &QuickSort::resultReady, this, &PlotHisto::updateChart);
 
  //InsetionSort ThreadConnection
-        is->setN(n);
+       // is->setN(n);
         is->moveToThread(&workerI);
         connect(&workerI, &QThread::finished, is, &QObject::deleteLater);
         connect(this, &PlotHisto::operate, is, &InsertionSort::doWork);
         connect(is, &InsertionSort::resultReady, this, &PlotHisto::updateChart);
 
 //SelectionSort ThreadConnection
-        ss->setN(n);
+      //  ss->setN(n);
         ss->moveToThread(&workerSS);
         connect(&workerSS, &QThread::finished, ss, &QObject::deleteLater);
         connect(this, &PlotHisto::operate, ss, &SelectionSort::doWork);
         connect(ss, &SelectionSort::resultReady, this, &PlotHisto::updateChart);
 
 //RadixSort ThreadConnection
-         r->setN(n);
+      //   r->setN(n);
          r->moveToThread(&workerR);
          connect(&workerR, &QThread::finished, r, &QObject::deleteLater);
          connect(this, &PlotHisto::operate, r, &RadixSort::doWork);
@@ -187,6 +193,12 @@ void PlotHisto::startThreads(){
 
 void PlotHisto::setN(int n){
     set2->remove(0, this->n);
+    set0->remove(0, this->n);
+    set1->remove(0, this->n);
+    set3->remove(0, this->n);
+    set4->remove(0, this->n);
+    set5->remove(0, this->n);
+    set6->remove(0, this->n);
     this->n = n;
     b->setN(n);
     q->setN(n);
@@ -204,13 +216,13 @@ void PlotHisto::randomArray(){
 
     for(int i = 0; i < n; i++){
         aux = aleatorio(n);
-        set0->replace(i, aux);
-        set1->replace(i, aux);
+        set0->append(aux);
+        set1->append(aux);
         set2->append(aux);
-        set3->replace(i, aux);
-        set4->replace(i, aux);
-        set5->replace(i, aux);
-        set6->replace(i, aux);
+        set3->append(aux);
+        set4->append(aux);
+        set5->append(aux);
+        set6->append(aux);
     }
     this->updateArrays();
     for(int i = m_chartView.size(); i >= 0; i--)
@@ -223,13 +235,13 @@ void PlotHisto::randomArray(){
 
 void PlotHisto::invertArray(){
     for(int i = n, j = 0; j < n; i--, j++ ){
-        set0->replace(j, i);
-        set1->replace(j, i);
-        set2->replace(j, i);
-        set3->replace(j, i);
-        set4->replace(j, i);
-        set5->replace(j, i);
-        set6->replace(j, i);
+        set0->append(i);
+        set1->append(i);
+        set2->append(i);
+        set3->append(i);
+        set4->append(i);
+        set5->append(i);
+        set6->append(i);
     }
     this->updateArrays();
 
@@ -321,7 +333,11 @@ QChart* PlotHisto::addChart(int i){
     m_label << label;
 
     chart->addSeries(series);
+<<<<<<< HEAD
    // chart->setAnimationOptions(QChart::SeriesAnimations);
+=======
+    //chart->setAnimationOptions(QChart::SeriesAnimations);
+>>>>>>> db689894474ed52f5b802b77e001eca913c648fd
 
     chart->legend()->setVisible(false);
     /*chart->legend()->setAlignment(Qt::AlignBottom);*/

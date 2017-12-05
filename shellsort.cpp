@@ -1,5 +1,6 @@
 #include "shellsort.h"
 #include <QTime>
+#include <cstdlib>
 
 ShellSort::ShellSort(QObject *parent) : QObject(parent)
 {
@@ -8,7 +9,8 @@ ShellSort::ShellSort(QObject *parent) : QObject(parent)
 
 void ShellSort::setN(int n){
     this->n = n;
-
+    free(A);
+    A = (int*) malloc(sizeof(int) * n);
 }
 
 void ShellSort::shellsort(int *vet){
@@ -31,7 +33,7 @@ void ShellSort::shellsort(int *vet){
 
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 100){
+                while(tmp->elapsed() < 1000){
 
                 }
 
