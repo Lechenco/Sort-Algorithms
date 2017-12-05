@@ -29,7 +29,7 @@ class PlotHisto : public QWidget
     QThread workerQ;
 public:
     explicit PlotHisto(QWidget *parent = nullptr);
-    void updateArrays();
+
 
 public slots:
     //void handleResults();
@@ -37,6 +37,7 @@ public slots:
     void invertArray();
     void updateChart();
     void setN(int n);
+    void startThreads();
 
 signals:
     void operate();
@@ -55,10 +56,13 @@ private:
     QBarSet *set0, *set1, *set2, *set3, *set4, *set5, *set6;
     QList<QChartView *> m_chartView;
     QList<QLabel *> m_label, m_compara;
-    QPushButton *random, *invert;
+    QPushButton *random, *invert, *play;
     QSlider *slider;
+    QGridLayout *baseLayout;
 
     QChart* addChart(int i);
+    void updateArrays();
+    void createChart();
 
 
 };

@@ -8,10 +8,10 @@ class BubbleSort : public QObject
     Q_OBJECT
 public:
     explicit BubbleSort(QObject *parent = nullptr);
-    void bubble_sort(int n);
+    void bubble_sort();
     void setN(int n);
 
-    int A[30];
+    int *A = NULL;
     int comp = 0, swap = 0;
 signals:
     void resultReady();

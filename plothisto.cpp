@@ -41,7 +41,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         set6 = new QBarSet("Radix");
 
         resetRand();
-
+        b->setN(n);
         //Iniciando variaveis e vetor inicial (invertido)
         for(int i = n, j = 0; i > 0; i--, j++){
             b->A[j] = i;
@@ -69,50 +69,29 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         invert->setText("Invertido");
         invert->setFixedSize(60, 30);
 
+        play = new QPushButton(this);
+        play->setText("Play");
+        play->setFixedSize(60, 30);
+
+
         slider = new QSlider();
         slider->setOrientation(Qt::Horizontal);
-        slider->setRange(0, 30);
+        slider->setRange(0, 25);
 
         //===========================================
         //Graficos
         //============================================
 
-        QGridLayout *baseLayout = new QGridLayout();
+        baseLayout = new QGridLayout();
         QHBoxLayout *settingsLayout = new QHBoxLayout();
         settingsLayout->setDirection(QHBoxLayout::TopToBottom);
         settingsLayout->addWidget(random);
         settingsLayout->addWidget(invert);
+        settingsLayout->addWidget(play);
         settingsLayout->addWidget(slider);
         baseLayout->addLayout(settingsLayout, 0, 0);
 
-
-        QChartView *chartView = new QChartView(this->addChart(0));
-        baseLayout->addWidget(chartView, 0, 2);
-        m_chartView << chartView;
-
-        chartView = new QChartView(this->addChart(1));
-        baseLayout->addWidget(chartView, 1, 0);
-        m_chartView << chartView;
-
-        chartView = new QChartView(this->addChart(2));
-        baseLayout->addWidget(chartView, 1, 1);
-        m_chartView << chartView;
-
-        chartView = new QChartView(this->addChart(3));
-        baseLayout->addWidget(chartView, 1, 2);
-        m_chartView << chartView;
-
-        chartView = new QChartView(this->addChart(4));
-        baseLayout->addWidget(chartView, 2, 0);
-        m_chartView << chartView;
-
-        chartView = new QChartView(this->addChart(5));
-        baseLayout->addWidget(chartView, 2, 1);
-        m_chartView << chartView;
-
-        chartView = new QChartView(this->addChart(6));
-        baseLayout->addWidget(chartView, 2, 2);
-        m_chartView << chartView;
+        this->createChart();
 
         QHBoxLayout *textLayout = new QHBoxLayout();
         QBoxLayout * numLayout = new QHBoxLayout();
@@ -151,7 +130,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         connect(s, &ShellSort::resultReady, this, &PlotHisto::updateChart);
 
 //BubbleSort ThreadConnection
-        b->setN(n);
+        //b->setN(n);
         b->moveToThread(&workerB);
         connect(&workerB, &QThread::finished, b, &QObject::deleteLater);
         connect(this, &PlotHisto::operate, b, &BubbleSort::doWork);
@@ -199,21 +178,23 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         connect(random, SIGNAL (clicked(bool)), this, SLOT (randomArray()));
         connect(invert, SIGNAL (clicked(bool)), this, SLOT (invertArray()));
         connect(slider, SIGNAL (valueChanged(int)), this, SLOT (setN(int)));
+        connect(play,   SIGNAL (clicked(bool)), this, SLOT (startThreads()));
+}
+
+void PlotHisto::startThreads(){
+    emit operate();
 }
 
 void PlotHisto::setN(int n){
+    set2->remove(0, this->n);
     this->n = n;
     b->setN(n);
-    is->setN(n);
-    m->setN(n);
-    s->setN(n);
-    r->setN(n);
     q->setN(n);
     ss->setN(n);
-
-    for(int i = 0; i < m_chartView.size(); i++){
-
-    }
+    s->setN(n);
+    is->setN(n);
+    r->setN(n);
+    m->setN(n);
 
 }
 
@@ -225,14 +206,18 @@ void PlotHisto::randomArray(){
         aux = aleatorio(n);
         set0->replace(i, aux);
         set1->replace(i, aux);
-        set2->replace(i, aux);
+        set2->append(aux);
         set3->replace(i, aux);
         set4->replace(i, aux);
         set5->replace(i, aux);
         set6->replace(i, aux);
     }
     this->updateArrays();
-    emit operate();
+    for(int i = m_chartView.size(); i >= 0; i--)
+        m_chartView.removeAt(i);
+
+    this->createChart();
+    //emit operate();
 
 }
 
@@ -248,7 +233,7 @@ void PlotHisto::invertArray(){
     }
     this->updateArrays();
 
-    emit operate();
+    //emit operate();
 
 }
 
@@ -341,4 +326,34 @@ QChart* PlotHisto::addChart(int i){
     chart->legend()->setVisible(false);
     /*chart->legend()->setAlignment(Qt::AlignBottom);*/
     return chart;
+}
+
+void PlotHisto::createChart(){
+    QChartView *chartView = new QChartView(this->addChart(0));
+    baseLayout->addWidget(chartView, 0, 2);
+    m_chartView << chartView;
+
+    chartView = new QChartView(this->addChart(1));
+    baseLayout->addWidget(chartView, 1, 0);
+    m_chartView << chartView;
+
+    chartView = new QChartView(this->addChart(2));
+    baseLayout->addWidget(chartView, 1, 1);
+    m_chartView << chartView;
+
+    chartView = new QChartView(this->addChart(3));
+    baseLayout->addWidget(chartView, 1, 2);
+    m_chartView << chartView;
+
+    chartView = new QChartView(this->addChart(4));
+    baseLayout->addWidget(chartView, 2, 0);
+    m_chartView << chartView;
+
+    chartView = new QChartView(this->addChart(5));
+    baseLayout->addWidget(chartView, 2, 1);
+    m_chartView << chartView;
+
+    chartView = new QChartView(this->addChart(6));
+    baseLayout->addWidget(chartView, 2, 2);
+    m_chartView << chartView;
 }

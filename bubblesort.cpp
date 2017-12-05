@@ -1,12 +1,13 @@
 #include "bubblesort.h"
 #include <QTime>
+#include <cstdlib>
 
 BubbleSort::BubbleSort(QObject *parent) : QObject(parent)
 {
 
 }
 
-void BubbleSort::bubble_sort(int n){
+void BubbleSort::bubble_sort(){
 
     int i, j, aux;
 
@@ -34,10 +35,12 @@ void BubbleSort::bubble_sort(int n){
 
 void BubbleSort::doWork(){
     comp = 0; swap = 0;
-    this->bubble_sort(n);
+    this->bubble_sort();
 }
 
 void BubbleSort::setN(int n){
     this->n = n;
+    free(A);
+    A = (int*) malloc(sizeof(int) * n);
 
 }
