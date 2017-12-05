@@ -23,7 +23,7 @@ void InsertionSort::insertion_sort(int n){
 
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 1000){
+            while(tmp->elapsed() < 400){
 
             }
 

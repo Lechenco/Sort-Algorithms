@@ -6,37 +6,6 @@ QuickSort::QuickSort(QObject *parent) : QObject(parent)
 {
 
 }
-int QuickSort::partition(int p, int r){
-
-    int q, i, aux=0;
-
-    q = p;
-
-    for(i=p; i<r; i++){
-
-        ++comp;
-        if(A[i]<=A[r]){
-            aux = A[q];
-            A[q] = A[i];
-            A[i] = aux;
-            q++;
-            ++swap;
-        }
-        QTime *tmp = new QTime();
-        tmp->start();
-        while(tmp->elapsed() < 1000){
-
-        }
-
-        emit resultReady();
-    }
-
-    aux = A[q];
-    A[q] = A[r];
-    A[r] = aux;
-
-    return q;
-}
 
 void QuickSort::quicksort(int left, int right){
 
@@ -60,7 +29,7 @@ void QuickSort::quicksort(int left, int right){
                 }
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 100){
+                while(tmp->elapsed() < 1000){
 
                 }
 

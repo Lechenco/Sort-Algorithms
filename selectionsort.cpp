@@ -21,7 +21,7 @@ void SelectionSort::selectionSort(int n){
                 menor = j;
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 1000){
+            while(tmp->elapsed() < 400){
 
             }
 

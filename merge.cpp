@@ -45,7 +45,7 @@ void Merge::merge(int p, int q, int r){
 
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 1000){
+                while(tmp->elapsed() < 400){
 
                 }
 

@@ -69,19 +69,20 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
 
         random = new QPushButton(this);
         random->setText("Random");
-        random->setFixedSize(60, 30);
+        random->setFixedSize(120, 30);
 
         invert = new QPushButton(this);
         invert->setText("Invertido");
-        invert->setFixedSize(60, 30);
+        invert->setFixedSize(120, 30);
 
         play = new QPushButton(this);
         play->setText("Play");
-        play->setFixedSize(60, 30);
+        play->setFixedSize(120, 30);
 
 
         slider = new QSlider();
         slider->setOrientation(Qt::Horizontal);
+        slider->setFixedSize(300, 30);
         slider->setRange(5, 70);
 
         //===========================================
@@ -244,6 +245,10 @@ void PlotHisto::invertArray(){
         set6->append(i);
     }
     this->updateArrays();
+    for(int i = m_chartView.size(); i >= 0; i--)
+        m_chartView.removeAt(i);
+
+    this->createChart();
 
     //emit operate();
 
@@ -333,11 +338,11 @@ QChart* PlotHisto::addChart(int i){
     m_label << label;
 
     chart->addSeries(series);
-<<<<<<< HEAD
+
    // chart->setAnimationOptions(QChart::SeriesAnimations);
-=======
+
     //chart->setAnimationOptions(QChart::SeriesAnimations);
->>>>>>> db689894474ed52f5b802b77e001eca913c648fd
+
 
     chart->legend()->setVisible(false);
     /*chart->legend()->setAlignment(Qt::AlignBottom);*/

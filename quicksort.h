@@ -9,7 +9,6 @@ class QuickSort : public QObject
 public:
     explicit QuickSort(QObject *parent = nullptr);
     void quicksort(int left, int right);
-    int partition(int p, int r);
     void setN(int n);
 
     int *A = NULL;

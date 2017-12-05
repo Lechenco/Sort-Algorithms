@@ -24,7 +24,7 @@ void BubbleSort::bubble_sort(){
 
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() <1000){
+            while(tmp->elapsed() < 400){
 
             }
 
