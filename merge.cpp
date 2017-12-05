@@ -45,7 +45,7 @@ void Merge::merge(int p, int q, int r){
 
                 QTime *tmp = new QTime();
                 tmp->start();
-                while(tmp->elapsed() < 100){
+                while(tmp->elapsed() < 1000){
 
                 }
 
@@ -77,4 +77,6 @@ void Merge::doWork(){
 
 void Merge::setN(int n){
     this->n = n;
+    free(A);
+    A = (int*) malloc(sizeof(int) * n);
 }

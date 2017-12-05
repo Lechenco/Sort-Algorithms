@@ -1,5 +1,6 @@
 #include "quicksort.h"
 #include <QTime>
+#include <cstdlib>
 
 QuickSort::QuickSort(QObject *parent) : QObject(parent)
 {
@@ -23,7 +24,7 @@ int QuickSort::partition(int p, int r){
         }
         QTime *tmp = new QTime();
         tmp->start();
-        while(tmp->elapsed() < 100){
+        while(tmp->elapsed() < 1000){
 
         }
 
@@ -75,6 +76,8 @@ void QuickSort::quicksort(int left, int right){
 
 void QuickSort::setN(int n){
     this->n = n;
+    free(A);
+    A = (int*) malloc(sizeof(int) * n);
 }
 
 void QuickSort::doWork(){

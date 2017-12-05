@@ -1,5 +1,6 @@
 #include "selectionsort.h"
 #include <QTime>
+#include <cstdlib>
 
 SelectionSort::SelectionSort(QObject *parent) : QObject(parent)
 {
@@ -20,7 +21,7 @@ void SelectionSort::selectionSort(int n){
                 menor = j;
             QTime *tmp = new QTime();
             tmp->start();
-            while(tmp->elapsed() < 100){
+            while(tmp->elapsed() < 1000){
 
             }
 
@@ -37,6 +38,8 @@ void SelectionSort::selectionSort(int n){
 
 void SelectionSort::setN(int n){
     this->n = n;
+    free(A);
+    A = (int*) malloc(sizeof(int) * n);
 }
 
 void SelectionSort::doWork(){

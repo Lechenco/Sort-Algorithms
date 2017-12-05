@@ -14,7 +14,7 @@ public:
     void setN(int n);
 
     //Achar outra forma de passar vetores entre classes <vector>
-    int A[30];
+    int *A = NULL;
     int comp = 0, swap = 0;
 
 signals:
