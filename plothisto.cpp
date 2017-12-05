@@ -321,7 +321,7 @@ QChart* PlotHisto::addChart(int i){
     m_label << label;
 
     chart->addSeries(series);
-    chart->setAnimationOptions(QChart::SeriesAnimations);
+   // chart->setAnimationOptions(QChart::SeriesAnimations);
 
     chart->legend()->setVisible(false);
     /*chart->legend()->setAlignment(Qt::AlignBottom);*/
