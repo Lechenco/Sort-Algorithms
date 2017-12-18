@@ -40,22 +40,19 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         set5 = new QBarSet("Selection");
         set6 = new QBarSet("Radix");
 
+        s->setSet(set0);
+        m->setSet(set1);
+        b->setSet(set2);
+        q->setSet(set3);
+        is->setSet(set4);
+        ss->setSet(set5);
+        r->setSet(set6);
+
         resetRand();
-        b->setN(n);
-        is->setN(n);
-        s->setN(n);
-        ss->setN(n);
-        m->setN(n);
-        q->setN(n);
+
         r->setN(n);
         //Iniciando variaveis e vetor inicial (invertido)
         for(int i = n, j = 0; i > 0; i--, j++){
-            b->A[j] = i;
-            is->A[j] = i;
-            s->A[j] = i;
-            ss->A[j] = i;
-            m->A[j] = i;
-            q->A[j] = i;
             r->A[j] = i;
 
             set0->append(i);
@@ -66,6 +63,7 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
             set5->append(i);
             set6->append(i);
         }
+
 
         random = new QPushButton(this);
         random->setText("Random");
@@ -206,7 +204,6 @@ PlotHisto::PlotHisto(QWidget *parent) : QWidget(parent)
         workerSS.start();
         workerR.start();
 
-
         //Conecçoes
         connect(random, SIGNAL (clicked(bool)), this, SLOT (randomArray()));
         connect(invert, SIGNAL (clicked(bool)), this, SLOT (invertArray()));
@@ -238,13 +235,7 @@ void PlotHisto::setN(int n){
     set6->remove(0, this->n);
     this->n = n;
     nStatus->setText("n:  " + QString::number(n));
-    b->setN(n);
-    q->setN(n);
-    ss->setN(n);
-    s->setN(n);
-    is->setN(n);
     r->setN(n);
-    m->setN(n);
 
     play->setEnabled(false);
     random->setEnabled(true);
@@ -340,15 +331,6 @@ void PlotHisto::invertArray(){
 }
 
 void PlotHisto::updateChart(){
-    for(int i = 0; i < n; i++){
-        set0->replace(i, s->A[i]);
-        set1->replace(i, m->A[i]);
-        set2->replace(i, b->A[i]);
-        set3->replace(i, q->A[i]);
-        set4->replace(i, is->A[i]);
-        set5->replace(i, ss->A[i]);
-        set6->replace(i, r->A[i]);
-    }
     m_compara.at(0)->setText(QString::number(s->comp) + " \t" + QString::number(s->swap));
     m_compara.at(1)->setText(QString::number(m->swap) + " \t" + QString::number(m->swap));
     m_compara.at(2)->setText(QString::number(b->comp) + " \t" + QString::number(b->swap));
@@ -360,12 +342,6 @@ void PlotHisto::updateChart(){
 
 void PlotHisto::updateArrays(){
     for(int i = 0; i < n; i++){
-        b->A[i] = set0->at(i);
-        m->A[i] = set0->at(i);
-        s->A[i] = set0->at(i);
-        q->A[i] = set0->at(i);
-        is->A[i] = set0->at(i);
-        ss->A[i] = set0->at(i);
         r->A[i] = set0->at(i);
     }
 

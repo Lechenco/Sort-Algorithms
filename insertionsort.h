@@ -2,6 +2,7 @@
 #define INSERTIONSORT_H
 
 #include <QObject>
+#include <QtCharts>
 
 class InsertionSort : public QObject
 {
@@ -9,9 +10,8 @@ class InsertionSort : public QObject
 public:
     explicit InsertionSort(QObject *parent = nullptr);
     void insertion_sort(int n);
-    void setN(int n);
+    void setSet(QBarSet * s);
 
-    int *A = NULL;
     int comp = 0, swap = 0;
 
 signals:
@@ -22,7 +22,7 @@ public slots:
     void doWork();
 
 private:
-    int n;
+    QBarSet * s;
 };
 
 #endif // INSERTIONSORT_H

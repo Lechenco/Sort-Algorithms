@@ -2,6 +2,7 @@
 #define RADIXSORT_H
 
 #include <QObject>
+#include <QtCharts>
 
 class RadixSort : public QObject
 {
@@ -10,6 +11,7 @@ public:
     explicit RadixSort(QObject *parent = nullptr);
     void radixSort(int size);
     int findLargestNum(int size);
+    void setSet(QBarSet * s);
     void setN(int n);
 
     int *A = NULL;
@@ -24,6 +26,7 @@ public slots:
 
 private:
     int n;
+    QBarSet * s;
 };
 
 #endif // RADIXSORT_H

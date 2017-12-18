@@ -2,6 +2,7 @@
 #define BUBBLESORT_H
 
 #include <QObject>
+#include <QtCharts>
 
 class BubbleSort : public QObject
 {
@@ -9,9 +10,8 @@ class BubbleSort : public QObject
 public:
     explicit BubbleSort(QObject *parent = nullptr);
     void bubble_sort();
-    void setN(int n);
+    void setSet(QBarSet * s);
 
-    int *A = NULL;
     int comp = 0, swap = 0;
 signals:
     void resultReady();
@@ -21,7 +21,7 @@ public slots:
     void doWork();
 
 private:
-    int n;
+    QBarSet * s;
 };
 
 #endif // BUBBLESORT_H

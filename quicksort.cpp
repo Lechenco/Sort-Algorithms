@@ -7,23 +7,26 @@ QuickSort::QuickSort(QObject *parent) : QObject(parent)
 
 }
 
+void QuickSort::setSet(QBarSet *s){
+    this->s = s;
+}
 
 void QuickSort::quicksort(int left, int right){
 
     int i = left, j = right;
           int tmp;
-          int pivot = A[(left + right) / 2];
+          int pivot = s->at((left + right) / 2);
 
           /* partition */
           while (i <= j) {
-                while (++comp && A[i] < pivot)
+                while (++comp && s->at(i) < pivot)
                       i++;
-                while (++comp && A[j] > pivot)
+                while (++comp && s->at(j) > pivot)
                       j--;
                 if (i <= j) {
-                      tmp = A[i];
-                      A[i] = A[j];
-                      A[j] = tmp;
+                      tmp = s->at(i);
+                      s->replace(i, s->at(j));
+                      s->replace(j, tmp);
                       i++;
                       j--;
                       ++swap;
@@ -44,14 +47,8 @@ void QuickSort::quicksort(int left, int right){
                 quicksort(i, right);
 }
 
-void QuickSort::setN(int n){
-    this->n = n;
-    free(A);
-    A = (int*) malloc(sizeof(int) * n);
-}
-
 void QuickSort::doWork(){
     comp = 0; swap = 0;
-    this->quicksort(0, n);
+    this->quicksort(0, s->count());
     emit greenPeace(3);
 }

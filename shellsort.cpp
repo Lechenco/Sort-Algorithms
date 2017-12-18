@@ -7,27 +7,25 @@ ShellSort::ShellSort(QObject *parent) : QObject(parent)
 
 }
 
-void ShellSort::setN(int n){
-    this->n = n;
-    free(A);
-    A = (int*) malloc(sizeof(int) * n);
+void ShellSort::setSet(QBarSet *s){
+    this->s = s;
 }
 
-void ShellSort::shellsort(int *vet){
+void ShellSort::shellsort(){
     int h = 1;
     int i, j, chave;
 
     do{
         h = 3*h + 1;
-    }while(h < n);
+    }while(h < s->count());
 
     do{
         h /= 3;
-        for(i = h; i < n; i++){
-            chave = vet[i];
+        for(i = h; i < s->count(); i++){
+            chave = s->at(i);
             j = i;
-            while(++comp && j >= h && vet[j - h] > chave){
-                vet[j] = vet[j - h];
+            while(++comp && j >= h && s->at(j -h) > chave){
+                s->replace(j, s->at(j - h));
                 j -= h;
                 ++swap;
 
@@ -39,7 +37,7 @@ void ShellSort::shellsort(int *vet){
 
                 emit resultReady();
             }
-            vet[j] = chave;
+            s->replace(j, chave);
             ++swap;
         }
 
@@ -48,7 +46,7 @@ void ShellSort::shellsort(int *vet){
 
 void ShellSort::doWork(){
     comp = 0; swap = 0;
-    this->shellsort(A);
+    this->shellsort();
     emit greenPeace(0);
 
 }

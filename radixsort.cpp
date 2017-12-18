@@ -7,14 +7,18 @@ RadixSort::RadixSort(QObject *parent) : QObject(parent)
 
 }
 
+void RadixSort::setSet(QBarSet *s){
+    this->s = s;
+}
+
 int RadixSort::findLargestNum(int size){
 
   int i;
   int largestNum = -1;
 
   for(i = 0; i < size; i++){
-    if(A[i] > largestNum)
-      largestNum = A[i];
+    if(s->at(i) > largestNum)
+      largestNum = s->at(i);
   }
 
   return largestNum;
@@ -47,11 +51,12 @@ void RadixSort::radixSort(int size){
 
     // Use the bucket to fill a "semiSorted" array
     for (i = size - 1; i >= 0; i--)
-      semiSorted[--bucket[(A[i] / significantDigit) % 10]] = A[i];
+      semiSorted[--bucket[(A[i] / significantDigit) % 10]] = s->at(i);
 
 
     for (i = 0; i < size; i++){
       A[i] = semiSorted[i];
+      s->replace(i, A[i]);
       swap++;
 
       QTime *tmp = new QTime();
@@ -72,7 +77,7 @@ void RadixSort::radixSort(int size){
 
 void RadixSort::doWork(){
     comp = 0; swap = 0;
-    this->radixSort(n);
+    this->radixSort(s->count());
     emit greenPeace(6);
 
 }

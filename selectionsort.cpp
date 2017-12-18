@@ -7,17 +7,21 @@ SelectionSort::SelectionSort(QObject *parent) : QObject(parent)
 
 }
 
+void SelectionSort::setSet(QBarSet *s){
+    this->s = s;
+}
+
 void SelectionSort::selectionSort(int n){
 
     int i, j, menor, aux;
 
-    for(i = 0; i < n-1; i++){
+    for(i = 0; i < s->count() -1; i++){
 
         menor = i;
 
-        for(j = i+1; j < n; j++){
+        for(j = i+1; j < s->count(); j++){
 
-            if(++comp && A[j] < A[menor])
+            if(++comp && s->at(j) < s->at(menor))
                 menor = j;
             QTime *tmp = new QTime();
             tmp->start();
@@ -28,22 +32,16 @@ void SelectionSort::selectionSort(int n){
             emit resultReady();
         }
 
-        aux = A[i];
-        A[i] = A[menor];
-        A[menor] = aux;
+        aux = s->at(i);
+        s->replace(i, s->at(menor));
+        s->replace(menor, aux);
         ++swap;
     }
 
 }
 
-void SelectionSort::setN(int n){
-    this->n = n;
-    free(A);
-    A = (int*) malloc(sizeof(int) * n);
-}
-
 void SelectionSort::doWork(){
     comp = 0; swap = 0;
-    this->selectionSort(n);
+    this->selectionSort(s->count());
     emit greenPeace(5);
 }

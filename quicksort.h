@@ -2,6 +2,7 @@
 #define QUICKSORT_H
 
 #include <QObject>
+#include <QtCharts>
 
 class QuickSort : public QObject
 {
@@ -10,9 +11,8 @@ public:
     explicit QuickSort(QObject *parent = nullptr);
     void quicksort(int left, int right);
     int partition(int p, int r);
-    void setN(int n);
+    void setSet(QBarSet * s);
 
-    int *A = NULL;
     int comp = 0, swap = 0;
 
 signals:
@@ -23,7 +23,7 @@ public slots:
     void doWork();
 
 private:
-    int n;
+    QBarSet * s;
 };
 
 #endif // QUICKSORT_H

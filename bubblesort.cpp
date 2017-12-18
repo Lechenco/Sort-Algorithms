@@ -7,18 +7,22 @@ BubbleSort::BubbleSort(QObject *parent) : QObject(parent)
 
 }
 
+void BubbleSort::setSet(QBarSet *s){
+    this->s = s;
+}
+
 void BubbleSort::bubble_sort(){
 
     int i, j, aux;
 
-    for(i=1; i<n; i++){
+    for(i = 1; i < s->count(); i++){
 
-        for(j=0; j<n-i; j++){
+        for(j = 0;  j< s->count() -i; j++){
 
-            if(++comp && A[j]>A[j+1]){
-                aux = A[j];
-                A[j] = A[j+1];
-                A[j+1] = aux;
+            if(++comp && s->at(j) > s->at(j+1)){
+                aux = s->at(j);
+                s->replace(j, s->at(j+1));
+                s->replace(j+1, aux);
                 ++swap;
             }
 
@@ -39,9 +43,3 @@ void BubbleSort::doWork(){
     emit greenPeace(2);
 }
 
-void BubbleSort::setN(int n){
-    this->n = n;
-    free(A);
-    A = (int*) malloc(sizeof(int) * n);
-
-}

@@ -2,19 +2,19 @@
 #define SHELLSORT_H
 
 #include <QObject>
+#include <QtCharts>
 
 class ShellSort : public QObject
 {
     Q_OBJECT
 public:
     explicit ShellSort(QObject *parent = nullptr);
-    void setN(int n);
-    void shellsort(int *vet);
+    void setSet(QBarSet *s);
+    void shellsort();
 
-    int *A = NULL;
     int comp = 0, swap = 0;
 private:
-    int n;
+    QBarSet * s;
 
 signals:
     void resultReady();

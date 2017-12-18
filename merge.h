@@ -2,6 +2,7 @@
 #define MERGE_H
 
 #include <QObject>
+#include <QtCharts>
 
 
 class Merge : public QObject
@@ -11,10 +12,8 @@ public:
     explicit Merge(QObject *parent = nullptr);
     void merge(int p, int q, int r);
     void mergeSort(int p, int r);
-    void setN(int n);
+    void setSet(QBarSet *s);
 
-    //Achar outra forma de passar vetores entre classes <vector>
-    int *A = NULL;
     int comp = 0, swap = 0;
 
 signals:
@@ -25,7 +24,7 @@ public slots:
     void doWork();
 
 private:
-    int n;
+    QBarSet * s;
 };
 
 #endif // MERGE_H
